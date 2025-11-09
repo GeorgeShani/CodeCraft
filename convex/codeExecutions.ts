@@ -19,7 +19,9 @@ export const saveExecution = mutation({
       .filter((q) => q.eq(q.field("userId"), identity.subject))
       .first();
 
-    if (!user?.isPro && args.language !== "javascript") {
+    // Free languages: JavaScript and Python
+    const freeLanguages = ["javascript", "python"];
+    if (!user?.isPro && !freeLanguages.includes(args.language)) {
       throw new ConvexError("Pro subscription required to use this language");
     }
 
@@ -47,7 +49,7 @@ export const getUserExecutions = query({
 
 export const getUserStats = query({
   args: {
-    userId: v.string()
+    userId: v.string(),
   },
   handler: async (ctx, args) => {
     const executions = await ctx.db

@@ -14,6 +14,28 @@ type LanguageConfig = Record<
 >;
 
 export const LANGUAGE_CONFIG: LanguageConfig = {
+  python: {
+    id: "python",
+    label: "Python",
+    logoPath: "/python.png",
+    pistonRuntime: { language: "python", version: "3.10.0" },
+    monacoLanguage: "python",
+    defaultCode: `# Python Playground
+numbers = [1, 2, 3, 4, 5]
+
+# Map numbers to their squares
+squares = [n ** 2 for n in numbers]
+print(f"Original numbers: {numbers}")
+print(f"Squared numbers: {squares}")
+
+# Filter for even numbers
+even_numbers = [n for n in numbers if n % 2 == 0]
+print(f"Even numbers: {even_numbers}")
+
+# Calculate sum
+numbers_sum = sum(numbers)
+print(f"Sum of numbers: {numbers_sum}")`,
+  },
   javascript: {
     id: "javascript",
     label: "JavaScript",
@@ -72,28 +94,6 @@ console.log('Original numbers:', math.numbers);
 console.log('Squared numbers:', math.squares());
 console.log('Even numbers:', math.evenNumbers());
 console.log('Sum of numbers:', math.sum());`,
-  },
-  python: {
-    id: "python",
-    label: "Python",
-    logoPath: "/python.png",
-    pistonRuntime: { language: "python", version: "3.10.0" },
-    monacoLanguage: "python",
-    defaultCode: `# Python Playground
-numbers = [1, 2, 3, 4, 5]
-
-# Map numbers to their squares
-squares = [n ** 2 for n in numbers]
-print(f"Original numbers: {numbers}")
-print(f"Squared numbers: {squares}")
-
-# Filter for even numbers
-even_numbers = [n for n in numbers if n % 2 == 0]
-print(f"Even numbers: {even_numbers}")
-
-# Calculate sum
-numbers_sum = sum(numbers)
-print(f"Sum of numbers: {numbers_sum}")`,
   },
   java: {
     id: "java",
@@ -308,8 +308,8 @@ sum=0
 for n in "\${numbers[@]}"; do
     ((sum += n))
 done
-echo "Sum of numbers: $sum"`
-},
+echo "Sum of numbers: $sum"`,
+  },
   c: {
     id: "c",
     label: "C",
