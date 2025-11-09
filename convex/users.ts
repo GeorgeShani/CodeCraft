@@ -50,12 +50,19 @@ export const upgradeToPro = mutation({
     amount: v.number(),
   },
   handler: async (ctx, args) => {
+    // Normalize email for case-insensitive matching
+    const normalizedEmail = args.email.toLowerCase().trim();
+
+    // Try to find user by email (case-insensitive)
     const user = await ctx.db
       .query("users")
-      .filter((q) => q.eq(q.field("email"), args.email))
-      .first();
+      .filter((q) => q.eq(q.field("email"), normalizedEmail))
+      .unique();
 
-    if (!user) throw new Error("User not found");
+    if (!user) {
+      console.error(`User not found for email: ${args.email}`);
+      throw new Error(`User not found for email: ${args.email}`);
+    }
 
     await ctx.db.patch(user._id, {
       isPro: true,
