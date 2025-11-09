@@ -326,15 +326,15 @@ int main() {
     for (int i = 0; i < len; i++) 
     {
         printf("%d ", numbers[i]);
-        printf("\n");
     }
+    printf("\\n");
 
     printf("Squared numbers: ");
     for (int i = 0; i < len; i++) 
     {
         printf("%d ", numbers[i] * numbers[i]);
-        printf("\n");
     }
+    printf("\\n");
 
     printf("Even numbers: ");
     for (int i = 0; i < len; i++) 
@@ -343,16 +343,15 @@ int main() {
         {
             printf("%d ", numbers[i]);
         }
-        
-        printf("\n");
     }
+    printf("\\n");
 
     int sum = 0;
     for (int i = 0; i < len; i++) 
     {
         sum += numbers[i];
-        printf("Sum of numbers: %d\n", sum);
     }
+    printf("Sum of numbers: %d", sum);
 
     return 0;
 }`,
