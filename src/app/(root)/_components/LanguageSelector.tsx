@@ -4,8 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { LANGUAGE_CONFIG } from "../_constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDownIcon, Sparkles, Lock } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 import useMounted from "@/hooks/useMounted";
 import Image from "next/image";
+import { useQuery } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+
+// Free languages available without pro plan
+const FREE_LANGUAGES = ["javascript", "python"];
 
 export default function LanguageSelector({
   hasAccess,
@@ -17,6 +23,11 @@ export default function LanguageSelector({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const currentLanguageObj = LANGUAGE_CONFIG[language];
   const mounted = useMounted();
+
+  const { user } = useUser();
+  const userData = useQuery(api.users.getUser, {
+    userId: user?.id || ""
+  });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,10 +44,16 @@ export default function LanguageSelector({
   }, []);
 
   const handleLanguageSelect = (langId: string) => {
-    if (!hasAccess && langId !== "javascript") return;
+    // Allow selection if user has pro access OR language is free
+    if (!hasAccess && !FREE_LANGUAGES.includes(langId)) return;
 
     setLanguage(langId);
     setIsOpen(false);
+  };
+
+  // Check if a language is available for the user
+  const isLanguageAvailable = (langId: string) => {
+    return hasAccess || FREE_LANGUAGES.includes(langId);
   };
 
   if (!mounted) return null;
@@ -47,7 +64,7 @@ export default function LanguageSelector({
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => setIsOpen(!isOpen)}
-        className={`group relative flex items-center gap-3 px-4 py-2.5 bg-[#1e1e2e]/80 rounded-lg transition-all duration-200 border border-gray-800/50 hover:border-gray-700 ${!hasAccess && language !== "javascript" ? "opacity-50 cursor-not-allowed" : ""}`}
+        className={`group relative flex items-center gap-3 px-4 py-2.5 bg-[#1e1e2e]/80 rounded-lg transition-all duration-200 border border-gray-800/50 hover:border-gray-700 ${!isLanguageAvailable(language) ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div
           className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
@@ -85,7 +102,8 @@ export default function LanguageSelector({
             </div>
             <div className="max-h-[280px] overflow-y-auto overflow-x-hidden">
               {Object.values(LANGUAGE_CONFIG).map((lang, index) => {
-                const isLocked = !hasAccess && lang.id !== "javascript";
+                const isLocked = !isLanguageAvailable(lang.id);
+                const isFree = FREE_LANGUAGES.includes(lang.id);
 
                 return (
                   <motion.div
@@ -101,7 +119,9 @@ export default function LanguageSelector({
                       disabled={isLocked}
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <div className={`relative size-8 rounded-lg p-1.5 group-hover:scale-110 transition-transform ${language === lang.id ? "bg-blue-500/10" : "bg-gray-800/50"}`}>
+                      <div
+                        className={`relative size-8 rounded-lg p-1.5 group-hover:scale-110 transition-transform ${language === lang.id ? "bg-blue-500/10" : "bg-gray-800/50"}`}
+                      >
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" />
                         <Image
                           width={24}
@@ -114,6 +134,11 @@ export default function LanguageSelector({
                       <span className="flex-1 text-left group-hover:text-white transition-colors">
                         {lang.label}
                       </span>
+                      {isFree && !hasAccess && (
+                        <span className="text-xs px-1.5 py-0.5 rounded bg-green-500/20 text-green-400 border border-green-500/30">
+                          Free
+                        </span>
+                      )}
                       {language === lang.id && (
                         <motion.div
                           className="absolute inset-0 border-2 border-blue-500/30 rounded-lg"
@@ -127,7 +152,7 @@ export default function LanguageSelector({
                       {isLocked ? (
                         <Lock className="w-4 h-4 text-gray-500" />
                       ) : (
-                        language === lang.id && (
+                        language === lang.id && userData?.isPro && (
                           <Sparkles className="w-4 h-4 text-blue-400 animate-pulse" />
                         )
                       )}
