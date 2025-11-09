@@ -211,6 +211,152 @@ func main() {
     println!("Sum of numbers: {}", sum);
 }`,
   },
+  lua: {
+    id: "lua",
+    label: "Lua",
+    logoPath: "/lua.png",
+    pistonRuntime: { language: "lua", version: "5.4.4" },
+    monacoLanguage: "lua",
+    defaultCode: `-- Create array
+local numbers = {1, 2, 3, 4, 5}
+
+-- Print original numbers
+io.write("Original numbers: ")
+for _, n in ipairs(numbers) do
+    io.write(n .. " ")
+end
+print()
+
+-- Calculate and print squares
+io.write("Squared numbers: ")
+for _, n in ipairs(numbers) do
+    io.write((n * n) .. " ")
+end
+print()
+
+-- Print even numbers
+io.write("Even numbers: ")
+for _, n in ipairs(numbers) do
+    if n % 2 == 0 then
+        io.write(n .. " ")
+    end
+end
+print()
+
+-- Calculate and print sum
+local sum = 0
+for _, n in ipairs(numbers) do
+    sum = sum + n
+end
+print("Sum of numbers: " .. sum)`,
+  },
+  php: {
+    id: "php",
+    label: "PHP",
+    logoPath: "/php.png",
+    pistonRuntime: { language: "php", version: "8.2.3" },
+    monacoLanguage: "php",
+    defaultCode: `<?php
+    $numbers = [1, 2, 3, 4, 5];
+  
+    echo "Original numbers: ";
+    echo implode(" ", $numbers) . "\\n";
+  
+    $squares = array_map(fn($n) => $n * $n, $numbers);
+    echo "Squared numbers: " . implode(" ", $squares) . "\\n";
+  
+    echo "Even numbers: ";
+    foreach ($numbers as $n) {
+        if ($n % 2 == 0) {
+            echo $n . " ";
+        }
+    }
+    echo "\\n";
+  
+    $sum = array_sum($numbers);
+    echo "Sum of numbers: $sum\\n";
+?>`,
+  },
+  bash: {
+    id: "bash",
+    label: "Bash",
+    logoPath: "/bash.png",
+    pistonRuntime: { language: "bash", version: "5.2.0" },
+    monacoLanguage: "shell",
+    defaultCode: `#!/bin/bash
+
+numbers=(1 2 3 4 5)
+
+echo -n "Original numbers: "
+echo "\${numbers[@]}"
+
+echo -n "Squared numbers: "
+for n in "\${numbers[@]}"; do
+    echo -n "$((n * n)) "
+done
+echo
+
+echo -n "Even numbers: "
+for n in "\${numbers[@]}"; do
+    if (( n % 2 == 0 )); then
+        echo -n "$n "
+    fi
+done
+echo
+
+sum=0
+for n in "\${numbers[@]}"; do
+    ((sum += n))
+done
+echo "Sum of numbers: $sum"`
+},
+  c: {
+    id: "c",
+    label: "C",
+    logoPath: "/c.png",
+    pistonRuntime: { language: "c", version: "10.2.0" },
+    monacoLanguage: "c",
+    defaultCode: `#include <stdio.h>
+
+int main() {
+    int numbers[] = {1, 2, 3, 4, 5};
+    int len = sizeof(numbers) / sizeof(numbers[0]);
+
+    printf("Original numbers: ");
+    for (int i = 0; i < len; i++) 
+    {
+        printf("%d ", numbers[i]);
+        printf("\n");
+    }
+
+    printf("Squared numbers: ");
+    for (int i = 0; i < len; i++) 
+    {
+        printf("%d ", numbers[i] * numbers[i]);
+        printf("\n");
+    }
+
+    printf("Even numbers: ");
+    for (int i = 0; i < len; i++) 
+    {
+        if (numbers[i] % 2 == 0) 
+        {
+            printf("%d ", numbers[i]);
+        }
+        
+        printf("\n");
+    }
+
+    int sum = 0;
+    for (int i = 0; i < len; i++) 
+    {
+        sum += numbers[i];
+        printf("Sum of numbers: %d\n", sum);
+    }
+
+    return 0;
+}`,
+  },
   cpp: {
     id: "cpp",
     label: "C++",
@@ -221,36 +367,37 @@ func main() {
 #include <vector>
 #include <algorithm>
 #include <numeric>
+using namespace std;
 
 int main() {
     // Create vector
-    std::vector<int> numbers = {1, 2, 3, 4, 5};
+    vector<int> numbers = {1, 2, 3, 4, 5};
     
     // Print original numbers
-    std::cout << "Original numbers: ";
-    for (int n : numbers) std::cout << n << " ";
-    std::cout << std::endl;
+    cout << "Original numbers: ";
+    for (int n : numbers) cout << n << " ";
+    cout << endl;
     
     // Calculate squares
-    std::vector<int> squares;
-    std::transform(numbers.begin(), numbers.end(), 
-                  std::back_inserter(squares),
+    vector<int> squares;
+    transform(numbers.begin(), numbers.end(), 
+                  back_inserter(squares),
                   [](int n) { return n * n; });
     
-    std::cout << "Squared numbers: ";
-    for (int n : squares) std::cout << n << " ";
-    std::cout << std::endl;
+    cout << "Squared numbers: ";
+    for (int n : squares) cout << n << " ";
+    cout << endl;
     
     // Filter even numbers
-    std::cout << "Even numbers: ";
+    cout << "Even numbers: ";
     for (int n : numbers) {
-        if (n % 2 == 0) std::cout << n << " ";
+        if (n % 2 == 0) cout << n << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
     
     // Calculate sum
-    int sum = std::accumulate(numbers.begin(), numbers.end(), 0);
-    std::cout << "Sum of numbers: " << sum << std::endl;
+    int sum = accumulate(numbers.begin(), numbers.end(), 0);
+    cout << "Sum of numbers: " << sum << endl;
     
     return 0;
 }`,
