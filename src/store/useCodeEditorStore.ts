@@ -6,7 +6,7 @@ import { CodeEditorState } from "@/types";
 const getInitialState = () => {
   if (typeof window === "undefined") {
     return {
-      language: "javascript",
+      language: "python",
       fontSize: 16,
       theme: "vs-dark",
     };
