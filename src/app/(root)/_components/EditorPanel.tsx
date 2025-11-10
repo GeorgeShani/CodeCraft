@@ -1,10 +1,10 @@
 "use client";
 import { useCodeEditorStore } from "@/store/useCodeEditorStore";
 import { useEffect, useState } from "react";
-import { defineMonacoThemes, LANGUAGE_CONFIG } from "../_constants";
+import { defineMonacoThemes, LANGUAGE_CONFIG, registerAssemblyLanguage } from "../_constants";
 import { EditorPanelSkeleton } from "./EditorPanelSkeleton";
 import { RotateCcwIcon, ShareIcon, TypeIcon } from "lucide-react";
-import { Editor } from "@monaco-editor/react";
+import { Editor, Monaco } from "@monaco-editor/react";
 import { motion } from "framer-motion";
 import { useClerk } from "@clerk/nextjs";
 import ShareSnippetDialog from "./ShareSnippetDialog";
@@ -110,7 +110,10 @@ export default function EditorPanel() {
               language={LANGUAGE_CONFIG[language].monacoLanguage}
               onChange={handleEditorChange}
               theme={theme}
-              beforeMount={defineMonacoThemes}
+              beforeMount={(monaco: Monaco) => {
+                defineMonacoThemes(monaco);
+                registerAssemblyLanguage(monaco);
+              }}
               onMount={(editor) => setEditor(editor)}
               options={{
                 minimap: { enabled: false },

@@ -314,6 +314,33 @@ for n in "\${numbers[@]}"; do
 done
 echo "Sum of numbers: $sum"`,
   },
+  assembly: {
+    id: "assembly",
+    label: "Assembly",
+    logoPath: "/assembly.png",
+    pistonRuntime: { language: "nasm", version: "2.15.5" },
+    monacoLanguage: "assembly",
+    defaultCode: `; Assembly Playground
+section .data
+    msg db "Hello, Assembly!", 10
+    len equ $ - msg
+
+section .text
+    global _start
+
+_start:
+    ; write(stdout, msg, len)
+    mov eax, 4        ; syscall: write
+    mov ebx, 1        ; stdout
+    mov ecx, msg      ; message address
+    mov edx, len      ; message length
+    int 0x80          ; invoke syscall
+
+    ; exit(0)
+    mov eax, 1        ; syscall: exit
+    xor ebx, ebx      ; exit code 0
+    int 0x80`,
+  },
   c: {
     id: "c",
     label: "C",
@@ -581,5 +608,23 @@ export const defineMonacoThemes = (monaco: Monaco) => {
       })),
       colors: themeData.colors,
     });
+  });
+};
+
+// Add below defineMonacoThemes (or anywhere in this file)
+export const registerAssemblyLanguage = (monaco: Monaco) => {
+  monaco.languages.register({ id: "assembly" });
+
+  monaco.languages.setMonarchTokensProvider("assembly", {
+    tokenizer: {
+      root: [
+        [/[;#].*$/, "comment"],
+        [/\b(mov|add|sub|int|jmp|cmp|lea|push|pop)\b/, "keyword"],
+        [/\b(eax|ebx|ecx|edx|esi|edi|esp|ebp)\b/, "variable"],
+        [/\b(section|global|extern|db|dw|dd|equ)\b/, "keyword"],
+        [/"[^"]*"/, "string"],
+        [/\b\d+\b/, "number"]
+      ]
+    }
   });
 };
