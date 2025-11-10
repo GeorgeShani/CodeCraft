@@ -66,34 +66,34 @@ console.log('Sum of numbers:', sum);`,
     monacoLanguage: "typescript",
     defaultCode: `// TypeScript Playground
 interface NumberArray {
-  numbers: number[];
-  sum(): number;
-  squares(): number[];
-  evenNumbers(): number[];
+    numbers: number[];
+    sum(): number;
+    squares(): number[];
+    evenNumbers(): number[];
 }
 
 class MathOperations implements NumberArray {
-  constructor(public numbers: number[]) {}
+    constructor(public numbers: number[]) {}
 
-  sum(): number {
-    return this.numbers.reduce((acc, curr) => acc + curr, 0);
-  }
+    sum(): number {
+        return this.numbers.reduce((acc, curr) => acc + curr, 0);
+    }
 
-  squares(): number[] {
-    return this.numbers.map(n => n * n);
-  }
+    squares(): number[] {
+        return this.numbers.map((n) => n * n);
+    }
 
-  evenNumbers(): number[] {
-    return this.numbers.filter(n => n % 2 === 0);
-  }
+    evenNumbers(): number[] {
+        return this.numbers.filter((n) => n % 2 === 0);
+    }
 }
 
 const math = new MathOperations([1, 2, 3, 4, 5]);
 
-console.log('Original numbers:', math.numbers);
-console.log('Squared numbers:', math.squares());
-console.log('Even numbers:', math.evenNumbers());
-console.log('Sum of numbers:', math.sum());`,
+console.log("Original numbers:", math.numbers);
+console.log("Squared numbers:", math.squares());
+console.log("Even numbers:", math.evenNumbers());
+console.log("Sum of numbers:", math.sum());`,
   },
   java: {
     id: "java",
@@ -102,39 +102,43 @@ console.log('Sum of numbers:', math.sum());`,
     pistonRuntime: { language: "java", version: "15.0.2" },
     monacoLanguage: "java",
     defaultCode: `public class Main {
-  public static void main(String[] args) {
-      // Create array
-      int[] numbers = {1, 2, 3, 4, 5};
-      
-      // Print original numbers
-      System.out.print("Original numbers: ");
-      printArray(numbers);
-      
-      // Calculate and print squares
-      int[] squares = new int[numbers.length];
-      for (int i = 0; i < numbers.length; i++) {
-          squares[i] = numbers[i] * numbers[i];
-      }
-      System.out.print("Squared numbers: ");
-      printArray(squares);
-      
-      // Print even numbers
-      System.out.print("Even numbers: ");
-      for (int n : numbers) {
-          if (n % 2 == 0) System.out.print(n + " ");
-      }
-      System.out.println();
-      
-      // Calculate and print sum
-      int sum = 0;
-      for (int n : numbers) sum += n;
-      System.out.println("Sum of numbers: " + sum);
-  }
-  
-  private static void printArray(int[] arr) {
-      for (int n : arr) System.out.print(n + " ");
-      System.out.println();
-  }
+    public static void main(String[] args) {
+        // Create array
+        int[] numbers = {1, 2, 3, 4, 5};
+    
+        // Print original numbers
+        System.out.print("Original numbers: ");
+        printArray(numbers);
+        
+        // Calculate and print squares
+        int[] squares = new int[numbers.length];
+        for (int i = 0; i < numbers.length; i++) {
+            squares[i] = numbers[i] * numbers[i];
+        }
+        System.out.print("Squared numbers: ");
+        printArray(squares);
+        
+        // Print even numbers
+        System.out.print("Even numbers: ");
+        for (int n : numbers) {
+            if (n % 2 == 0) {
+                System.out.print(n + " ");
+            }
+        }
+        System.out.println();
+    
+        // Calculate and print sum
+        int sum = 0;
+        for (int n : numbers) sum += n;
+        System.out.println("Sum of numbers: " + sum);
+    }
+
+    private static void printArray(int[] arr) {
+        for (int n : arr) {
+            System.out.print(n + " ");
+        }
+        System.out.println();
+    }
 }`,
   },
   go: {
@@ -148,34 +152,34 @@ console.log('Sum of numbers:', math.sum());`,
 import "fmt"
 
 func main() {
-  // Create slice
-  numbers := []int{1, 2, 3, 4, 5}
-  
-  // Print original numbers
-  fmt.Println("Original numbers:", numbers)
-  
-  // Calculate squares
-  squares := make([]int, len(numbers))
-  for i, n := range numbers {
-      squares[i] = n * n
-  }
-  fmt.Println("Squared numbers:", squares)
-  
-  // Filter even numbers
-  var evenNumbers []int
-  for _, n := range numbers {
-      if n%2 == 0 {
-          evenNumbers = append(evenNumbers, n)
-      }
-  }
-  fmt.Println("Even numbers:", evenNumbers)
-  
-  // Calculate sum
-  sum := 0
-  for _, n := range numbers {
-      sum += n
-  }
-  fmt.Println("Sum of numbers:", sum)
+    // Create slice
+    numbers := []int{1, 2, 3, 4, 5}
+    
+    // Print original numbers
+    fmt.Println("Original numbers:", numbers)
+    
+    // Calculate squares
+    squares := make([]int, len(numbers))
+    for i, n := range numbers {
+        squares[i] = n * n
+    }
+    fmt.Println("Squared numbers:", squares)
+    
+    // Filter even numbers
+    var evenNumbers []int
+    for _, n := range numbers {
+        if n % 2 == 0 {
+            evenNumbers = append(evenNumbers, n)
+        }
+    }
+    fmt.Println("Even numbers:", evenNumbers)
+    
+    // Calculate sum
+    sum := 0
+    for _, n := range numbers {
+        sum += n
+    }
+    fmt.Println("Sum of numbers:", sum)
 }`,
   },
   rust: {
