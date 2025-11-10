@@ -4,13 +4,18 @@ import { useParams } from "next/navigation";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Clock, Code, MessageSquare, User } from "lucide-react";
-import { defineMonacoThemes, LANGUAGE_CONFIG } from "@/app/(root)/_constants";
+import {
+  defineMonacoThemes,
+  LANGUAGE_CONFIG,
+  registerAssemblyLanguage,
+} from "@/app/(root)/_constants";
 import { formatLanguageName } from "@/utils/formatLanguageName";
-import { Editor } from "@monaco-editor/react";
+import { Editor, Monaco } from "@monaco-editor/react";
 import NavigationHeader from "@/components/NavigationHeader";
 import SnippetLoadingSkeleton from "./_components/SnippetLoadingSkeleton";
 import CopyButton from "./_components/CopyButton";
 import CommentSection from "./_components/CommentSection";
+import { useCodeEditorStore } from "@/store/useCodeEditorStore";
 
 export default function SnippetDetailsPage() {
   const snippetId = useParams().id;
@@ -21,7 +26,9 @@ export default function SnippetDetailsPage() {
   const comments = useQuery(api.snippets.getComments, {
     snippetId: snippetId as Id<"snippets">,
   });
-
+  
+  const { theme } = useCodeEditorStore();
+  
   if (snippet === undefined) return <SnippetLoadingSkeleton />;
 
   return (
@@ -78,8 +85,11 @@ export default function SnippetDetailsPage() {
               height="600px"
               language={LANGUAGE_CONFIG[snippet.language].monacoLanguage}
               value={snippet.code}
-              theme="vs-dark"
-              beforeMount={defineMonacoThemes}
+              theme={theme}
+              beforeMount={(monaco: Monaco) => {
+                defineMonacoThemes(monaco);
+                registerAssemblyLanguage(monaco);
+              }}
               options={{
                 minimap: { enabled: false },
                 fontSize: 16,
