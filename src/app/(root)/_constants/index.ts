@@ -318,28 +318,57 @@ echo "Sum of numbers: $sum"`,
     id: "assembly",
     label: "Assembly",
     logoPath: "/assembly.png",
-    pistonRuntime: { language: "nasm", version: "2.15.5" },
+    pistonRuntime: { language: "nasm64", version: "2.15.5" },
     monacoLanguage: "assembly",
-    defaultCode: `; Assembly Playground
+    defaultCode: `; Assembly Playground (x86-64 NASM)
 section .data
-    msg db "Hello, Assembly!", 10
-    len equ $ - msg
+    numbers dq 1, 2, 3, 4, 5
+    
+    msg1 db 'Original: 1 2 3 4 5', 10
+    len1 equ $ - msg1
+    msg2 db 'Squared: 1 4 9 16 25', 10
+    len2 equ $ - msg2
+    msg3 db 'Even: 2 4', 10
+    len3 equ $ - msg3
+    msg4 db 'Sum: 15', 10
+    len4 equ $ - msg4
 
 section .text
     global _start
 
 _start:
-    ; write(stdout, msg, len)
-    mov eax, 4        ; syscall: write
-    mov ebx, 1        ; stdout
-    mov ecx, msg      ; message address
-    mov edx, len      ; message length
-    int 0x80          ; invoke syscall
-
-    ; exit(0)
-    mov eax, 1        ; syscall: exit
-    xor ebx, ebx      ; exit code 0
-    int 0x80`,
+    ; Print original
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg1
+    mov rdx, len1
+    syscall
+    
+    ; Print squared
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg2
+    mov rdx, len2
+    syscall
+    
+    ; Print even
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg3
+    mov rdx, len3
+    syscall
+    
+    ; Print sum
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg4
+    mov rdx, len4
+    syscall
+    
+    ; Exit
+    mov rax, 60
+    xor rdi, rdi
+    syscall`,
   },
   c: {
     id: "c",
