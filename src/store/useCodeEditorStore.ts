@@ -12,7 +12,7 @@ const getInitialState = () => {
     };
   }
 
-  const savedLanguage = localStorage.getItem("editor-language") || "javascript";
+  const savedLanguage = localStorage.getItem("editor-language") || "python";
   const savedTheme = localStorage.getItem("editor-theme") || "vs-dark";
   const savedFontSize = localStorage.getItem("editor-font-size") || 16;
 
